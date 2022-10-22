@@ -1,14 +1,16 @@
-import { getRealPath, getProjectRootDir } from './fs';
-import { log } from './log';
+import { find, getProjectRootDir, getRealPath } from './fs'
+import { debug, success } from './log'
 
 interface optionType { [k: string]: any }
 
 export default async function run(args: Array<string>, options: optionType) {
-  console.log({ args, options })
-  // console.log(path.resolve(args[0]))
+  console.log(options)
+  debug('Run', args[0])
+  success(`\nUser Input => ${args[0]}\n`)
   const targetFileName = await getRealPath(args[0])
 
-  const projectFileName = await getProjectRootDir(targetFileName)
-  log(targetFileName)
-  // log(projectFileName)
+  const projectFilePath = await getProjectRootDir(targetFileName)
+  success(`\nProject File => ${projectFilePath}\n`)
+
+  find(targetFileName, projectFilePath)
 }

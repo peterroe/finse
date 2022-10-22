@@ -1,6 +1,39 @@
-import {  existsSync ,promises as fs } from 'fs'
-import { resolve } from 'path'
-import { error, debug } from './log'
+import { existsSync, promises as fs } from 'fs'
+import { extname, join, resolve } from 'path'
+import { filterBlackList } from './utils'
+import { debug, error } from './log'
+import { extensions } from './config'
+
+type pathFn<T> = (path: string) => T
+
+const isRootDir: pathFn<boolean> = (path: string) => {
+  return path === resolve(path, '../')
+}
+
+const isProjectRootDir: pathFn<boolean> = (path: string) => {
+  return existsSync(resolve(path, 'package.json'))
+}
+
+const isDirectory: pathFn<Promise<boolean>> = async (path: string) => {
+  const stat = await fs.stat(path)
+  return stat.isDirectory()
+}
+
+const getParentDir: pathFn<string> = (path: string) => {
+  return resolve(path, '../')
+}
+
+const completionExt: pathFn<string> = (path: string) => {
+  for (const ext of extensions) {
+    if (existsSync(path + ext)) {
+      path += ext
+      debug('completionExt', path)
+      return path
+    }
+  }
+  error(`Can't find ${path} :(`)
+  process.exit(0)
+}
 
 /**
  * @description: Get the real path of the file
@@ -10,11 +43,18 @@ import { error, debug } from './log'
  */
 export async function getRealPath(path: string): Promise<string> {
   debug('getRealPath', path)
-  try {
-    return await fs.realpath(path)
-  } catch (e) {
-    error('File not found, please check the path :(')
-    process.exit(0)
+  if (extname(path)) {
+    try {
+      return await fs.realpath(path)
+    }
+    catch (e) {
+      error('File not found, please check the path :(')
+      process.exit(0)
+    }
+  }
+  else {
+    // debug('getRealPath', JSON.parse(parse(path))
+    return await completionExt(path)
   }
 }
 
@@ -25,22 +65,27 @@ export async function getRealPath(path: string): Promise<string> {
  * @return /Users/xxx
  */
 export async function getProjectRootDir(path: string): Promise<string> {
-  
-  const isRootDir  = (path: string) => {
-    return path === resolve(path, '../')
-  }
-
-  const isProjectRootDir = (path: string) => {
-    return existsSync(resolve(path, 'package.json'))
-  }
-
-  const getParentDir = (path: string) => {
-    return resolve(path, '../')
-  }
-  do {
+  do
     path = getParentDir(path)
-  } while(!isRootDir(path) && !isProjectRootDir(path))
-  
+  while (!isRootDir(path) && !isProjectRootDir(path))
+
   debug('getProjectRootDir', `${path}`)
   return path
+}
+
+export async function find(targetFileName: string, projectFilePath: string) {
+  debug('find', `${targetFileName} ${projectFilePath}`)
+
+  const dfs = async (dirname: string) => {
+    const files = filterBlackList(
+      await fs.readdir(dirname),
+    ).map(file => join(dirname, file))
+
+    for (const file of files) {
+      debug('detect', file)
+      if (await isDirectory(file))
+        dfs(file)
+    }
+  }
+  dfs(projectFilePath)
 }
