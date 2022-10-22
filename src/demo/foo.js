@@ -1,0 +1,1 @@
+import mode from './test/mode'

@@ -1,0 +1,64 @@
+{
+  "name": "finse",
+  "version": "1.0.0",
+  "packageManager": "pnpm@7.11.0",
+  "description": "A command line tool template",
+  "author": "peterroe",
+  "license": "MIT",
+  "homepage": "https://github.com/peterroe/finse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterroe/finse.git"
+  },
+  "bugs": "https://github.com/peterroe/finse/issues",
+  "keywords": [
+    "cli",
+    "typescript",
+    "template"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "finse": "./bin/index.mjs"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "lint": "eslint \"**/*.{ts,js}\"",
+    "fix": "eslint --fix \"**/*.{ts,js}\"",
+    "start": "esno src/index.ts",
+    "test": "vitest",
+    "release": "bumpp",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "0.26.3",
+    "@types/node": "18.6.0",
+    "bumpp": "8.2.1",
+    "cac": "6.7.14",
+    "eslint": "8.23.1",
+    "esno": "0.16.3",
+    "husky": "4.3.8",
+    "kleur": "^4.1.5",
+    "typescript": "4.8.2",
+    "unbuild": "0.8.11",
+    "vite": "3.1.4",
+    "vitest": "0.23.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run typecheck"
+    }
+  }
+}
