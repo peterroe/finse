@@ -1,5 +1,6 @@
-import { relative, sep } from 'path'
+import { relative, sep, extname } from 'path'
 import { debug } from './log'
+import c from 'kleur'
 
 class TreeNode {
   name: string
@@ -45,10 +46,11 @@ export default class Tree {
       })
       if(index != -1) {
         parentNode = parentNode.children[index]
+        
       } else {
         const node = new TreeNode(dirName)
-        parentNode.children.push(node)
-        parentNode = parentNode.children[0]
+        const index = parentNode.children.push(node)
+        parentNode = parentNode.children[index - 1]
       }
       i++
     }
@@ -56,6 +58,22 @@ export default class Tree {
   }
 
   output() {
-    
+    const logName = (name: string) => {
+      return extname(name) ? c.bgCyan(name) : name
+    }
+    const logPrefix = (f: boolean) => {
+      return f ? '└─' : '├─'
+    }
+    console.log(c.cyan('=======start======'))
+    const dfs = (node: TreeNode, d: number, flag: boolean) => {
+      console.log('    '.repeat(d) + logPrefix(flag) +  logName(node.name) + '\n')
+      for(let i = 0; i < node.children.length; i++) {
+        const no = node.children[i]
+        if(no)
+          dfs(no, d + 1, i === node.children.length - 1 )
+      }
+    }
+    dfs(this.root, 0, true)
+    console.log(c.cyan('=======end======'))
   }
 }
