@@ -18,6 +18,10 @@ export function success(content: string) {
   console.log(c.green().bold(content))
 }
 
+export function dim(content: string) {
+  console.log(c.dim(content))
+}
+
 export function debug(callee = 'Function', content: string) {
   if (!isDebug)
     return

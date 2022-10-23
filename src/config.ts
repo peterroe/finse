@@ -12,5 +12,8 @@ export const blackList = [
   'yarn.lock',
   'package-lock.json',
   'pnpm-lock.yaml',
+  'README.md',
+  'LICENSE',
 ]
 
+export const moduleReg = /(import|export)\s+.*\s+from\s+['"](.*)['"]|require\(['"](.*)['"]\)|import\(['"](.*)['"]\)|import\s+['"](.*)['"]/g

@@ -1,7 +1,7 @@
 import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
-import { filterBlackList } from './utils'
-import { debug, error } from './log'
+import { filterBlackList, isMatchTargetFile } from './utils'
+import { debug, error, success } from './log'
 import { extensions } from './config'
 
 type pathFn<T> = (path: string) => T
@@ -23,7 +23,7 @@ const getParentDir: pathFn<string> = (path: string) => {
   return resolve(path, '../')
 }
 
-const completionExt: pathFn<string> = (path: string) => {
+export const completionExt: pathFn<string> = (path: string) => {
   for (const ext of extensions) {
     if (existsSync(path + ext)) {
       path += ext
@@ -75,17 +75,30 @@ export async function getProjectRootDir(path: string): Promise<string> {
 
 export async function find(targetFileName: string, projectFilePath: string) {
   debug('find', `${targetFileName} ${projectFilePath}`)
-
+  const result: Array<string> = []
   const dfs = async (dirname: string) => {
     const files = filterBlackList(
       await fs.readdir(dirname),
     ).map(file => join(dirname, file))
 
     for (const file of files) {
-      debug('detect', file)
+      debug('detect =====>', file)
       if (await isDirectory(file))
-        dfs(file)
-    }
+        await dfs(file)
+      else {
+        const fileContent = await fs.readFile(file, 'utf-8')
+        const isInclude = isMatchTargetFile(
+          resolve(file, '../'),
+          targetFileName,
+          fileContent,
+        )
+        if(isInclude) {
+          result.push(file)
+          success(`Find in ${file}`)
+        }
+      }
+    } 
   }
-  dfs(projectFilePath)
+  await dfs(projectFilePath)
+  console.log({result})
 }
