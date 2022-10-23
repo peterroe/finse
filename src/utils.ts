@@ -1,7 +1,7 @@
+import { extname, resolve } from 'path'
 import { blackList, moduleReg } from './config'
-import { resolve, extname } from 'path'
 import { completionExt } from './fs'
-import { debug, dim, success } from './log'
+import { debug } from './log'
 
 export function filterBlackList(files: string[]): string[] {
   return files.filter((file) => {
@@ -11,20 +11,20 @@ export function filterBlackList(files: string[]): string[] {
 
 /**
  * @description: is match the import statement
- * @param {string} file 
+ * @param {string} file
  * @param {string} targetFileName
  * @param {string} fileContent
  */
 export function isMatchTargetFile(
-  file:string,
+  file: string,
   targetFileName: string,
-  fileContent: string
+  fileContent: string,
 ): boolean {
   const MatchResult = fileContent.match(moduleReg) || []
-  
+
   const rawImportPaths: Array<string> = MatchResult
     .filter(result => result.length)
-    .map(result => {
+    .map((result) => {
       return result.match(/['"](.*)['"]/g)?.[0].slice(1, -1) || ''
     }).filter(importPath => importPath.startsWith('.'))
 
@@ -34,11 +34,10 @@ export function isMatchTargetFile(
 
       let fileName = resolve(file, item)
       fileName = extname(fileName) ? fileName : completionExt(fileName)
-      
+
       debug('importFilePath', fileName)
-      if(fileName === targetFileName) {
+      if (fileName === targetFileName)
         return true
-      }
     }
   }
   return false

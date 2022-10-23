@@ -1,6 +1,4 @@
 require('./test/mode.js')
 
-
-if(true) {
+if (Math.random() > 0.5)
   import('./test/mode')
-}

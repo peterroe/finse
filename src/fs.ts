@@ -83,8 +83,7 @@ export async function find(targetFileName: string, projectFilePath: string) {
 
     for (const file of files) {
       debug('detect =====>', file)
-      if (await isDirectory(file))
-        await dfs(file)
+      if (await isDirectory(file)) { await dfs(file) }
       else {
         const fileContent = await fs.readFile(file, 'utf-8')
         const isInclude = isMatchTargetFile(
@@ -92,13 +91,13 @@ export async function find(targetFileName: string, projectFilePath: string) {
           targetFileName,
           fileContent,
         )
-        if(isInclude) {
+        if (isInclude) {
           result.push(file)
           success(`Find in ${file}`)
         }
       }
-    } 
+    }
   }
   await dfs(projectFilePath)
-  console.log({result})
+  console.log({ result })
 }
