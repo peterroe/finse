@@ -1,6 +1,6 @@
-import { relative, sep, extname } from 'path'
-import { debug } from './log'
+import { extname, relative, sep } from 'path'
 import c from 'kleur'
+import { debug } from './log'
 
 class TreeNode {
   name: string
@@ -15,7 +15,7 @@ class TreeNode {
 export default class Tree {
   treeName: string
   root: TreeNode
-  
+
   constructor(treeName: string) {
     this.treeName = treeName
     this.root = this.generateRoot(treeName)
@@ -30,24 +30,23 @@ export default class Tree {
 
   generateNodeFrom(paths: Array<string>) {
     const relativeDirsPaths: Array<Array<string>> = paths.map(path => relative(this.treeName, path).split(sep))
-    for(let relativeDirs of relativeDirsPaths) {
-      this.insert(relativeDirs) 
-    }
+    for (const relativeDirs of relativeDirsPaths)
+      this.insert(relativeDirs)
   }
 
   insert(relativeDirs: Array<string>) {
     debug('insert==>', JSON.stringify(relativeDirs))
     let i = 0
     let parentNode = this.root
-    while(i < relativeDirs.length) {
+    while (i < relativeDirs.length) {
       const dirName = relativeDirs[i]
-      const index = parentNode.children.findIndex(node => {
-        return node.name == dirName
+      const index = parentNode.children.findIndex((node) => {
+        return node.name === dirName
       })
-      if(index != -1) {
+      if (index !== -1) {
         parentNode = parentNode.children[index]
-        
-      } else {
+      }
+      else {
         const node = new TreeNode(dirName)
         const len = parentNode.children.push(node)
         parentNode = parentNode.children[len - 1]
@@ -66,11 +65,11 @@ export default class Tree {
     }
     console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {
-      console.log('    '.repeat(d) + logPrefix(flag) +  logName(node.name) + '\n')
-      for(let i = 0; i < node.children.length; i++) {
+      console.log(`${'    '.repeat(d) + logPrefix(flag) + logName(node.name)}\n`)
+      for (let i = 0; i < node.children.length; i++) {
         const no = node.children[i]
-        if(no)
-          dfs(no, d + 1, i === node.children.length - 1 )
+        if (no)
+          dfs(no, d + 1, i === node.children.length - 1)
       }
     }
     dfs(this.root, 0, true)

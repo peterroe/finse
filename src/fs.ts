@@ -1,7 +1,7 @@
 import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
 import { filterBlackList, isMatchTargetFile } from './utils'
-import { debug, error, success } from './log'
+import { debug, error } from './log'
 import { extensions } from './config'
 
 type pathFn<T> = (path: string) => T
@@ -74,8 +74,8 @@ export async function getProjectRootDir(path: string): Promise<string> {
 }
 
 export async function find(
-  targetFileName: string, 
-  projectFilePath: string
+  targetFileName: string,
+  projectFilePath: string,
 ): Promise<Array<string>> {
   debug('find', `${targetFileName} ${projectFilePath}`)
   const result: Array<string> = []
@@ -94,10 +94,9 @@ export async function find(
           targetFileName,
           fileContent,
         )
-        if (isInclude) {
+        if (isInclude)
           result.push(file)
           // success(`Find in ${file}`)
-        }
       }
     }
   }

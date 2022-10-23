@@ -1,10 +1,10 @@
 import { find, getProjectRootDir, getRealPath } from './fs'
 import { generateTree } from './utils'
-import { debug, success } from './log'
+import { debug } from './log'
 
-interface optionType { [k: string]: any }
+// interface optionType { [k: string]: any }
 
-export default async function run(args: Array<string>, options: optionType) {
+export default async function run(args: Array<string>) {
   // console.log(options)
   debug('Run', args[0])
   // success(`\nUser Input => ${args[0]}\n`)
@@ -15,5 +15,5 @@ export default async function run(args: Array<string>, options: optionType) {
 
   const filePaths: Array<string> = await find(targetFileName, projectFilePath)
 
-  const tree = generateTree(projectFilePath, filePaths)
+  generateTree(projectFilePath, filePaths)
 }

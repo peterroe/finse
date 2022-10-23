@@ -1,4 +1,4 @@
-import { extname, resolve, relative } from 'path'
+import { extname, resolve } from 'path'
 import { blackList, moduleReg } from './config'
 import { completionExt } from './fs'
 import Tree from './tree'
