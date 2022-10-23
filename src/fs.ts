@@ -73,7 +73,10 @@ export async function getProjectRootDir(path: string): Promise<string> {
   return path
 }
 
-export async function find(targetFileName: string, projectFilePath: string) {
+export async function find(
+  targetFileName: string, 
+  projectFilePath: string
+): Promise<Array<string>> {
   debug('find', `${targetFileName} ${projectFilePath}`)
   const result: Array<string> = []
   const dfs = async (dirname: string) => {
@@ -99,5 +102,5 @@ export async function find(targetFileName: string, projectFilePath: string) {
     }
   }
   await dfs(projectFilePath)
-  console.log({ result })
+  return result
 }

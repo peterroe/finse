@@ -1,6 +1,7 @@
-import { extname, resolve } from 'path'
+import { extname, resolve, relative } from 'path'
 import { blackList, moduleReg } from './config'
 import { completionExt } from './fs'
+import Tree from './tree'
 import { debug } from './log'
 
 export function filterBlackList(files: string[]): string[] {
@@ -42,3 +43,20 @@ export function isMatchTargetFile(
   }
   return false
 }
+
+export function generateTree(projectFilePath: string, paths: Array<string>): string {
+  console.log(paths, projectFilePath)
+  // const tree = longestCommonPrefix(paths)
+  const ins = new Tree(projectFilePath)
+
+  ins.generateNodeFrom(paths)
+
+  ins.output()
+}
+/*
+finse
+  ├── src/demo
+  │       ├── bar.ts
+  │       ├── foo.ts
+
+*/
