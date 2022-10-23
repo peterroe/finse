@@ -4,7 +4,7 @@
 
 // export const __dirname = dirname(__filename)
 
-export const extensions = ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+export const extensions = ['/index.ts', '/index.js', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
 
 export const blackList = [
   'dist',

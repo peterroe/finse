@@ -49,8 +49,8 @@ export default class Tree {
         
       } else {
         const node = new TreeNode(dirName)
-        const index = parentNode.children.push(node)
-        parentNode = parentNode.children[index - 1]
+        const len = parentNode.children.push(node)
+        parentNode = parentNode.children[len - 1]
       }
       i++
     }
@@ -64,7 +64,7 @@ export default class Tree {
     const logPrefix = (f: boolean) => {
       return f ? '└─' : '├─'
     }
-    console.log(c.cyan('=======start======'))
+    console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {
       console.log('    '.repeat(d) + logPrefix(flag) +  logName(node.name) + '\n')
       for(let i = 0; i < node.children.length; i++) {
@@ -74,6 +74,6 @@ export default class Tree {
       }
     }
     dfs(this.root, 0, true)
-    console.log(c.cyan('=======end======'))
+    // console.log(c.cyan(' ======end======'))
   }
 }

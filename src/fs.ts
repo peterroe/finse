@@ -96,7 +96,7 @@ export async function find(
         )
         if (isInclude) {
           result.push(file)
-          success(`Find in ${file}`)
+          // success(`Find in ${file}`)
         }
       }
     }

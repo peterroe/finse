@@ -45,7 +45,7 @@ export function isMatchTargetFile(
 }
 
 export function generateTree(projectFilePath: string, paths: Array<string>): string {
-  console.log(paths, projectFilePath)
+  // console.log(paths, projectFilePath)
   // const tree = longestCommonPrefix(paths)
   const ins = new Tree(projectFilePath)
 
