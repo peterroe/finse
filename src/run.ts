@@ -11,7 +11,7 @@ export default async function run(args: Array<string>, options: optionType) {
 
   const targetFileName: string = await getFileRealPath(args[0])
 
-  const projectFilePath: string = await getRealPath(root) || await getProjectRootDir(targetFileName)
+  const projectFilePath: string = (root && await getRealPath(root)) || await getProjectRootDir(targetFileName)
 
   const filePaths: Array<string> = await find(targetFileName, projectFilePath)
 
