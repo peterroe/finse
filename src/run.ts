@@ -1,4 +1,4 @@
-import { find, getProjectRootDir, getRealPath, getFileRealPath } from './fs'
+import { find, getFileRealPath, getProjectRootDir, getRealPath } from './fs'
 import { generateTree } from './utils'
 import { debug, success } from './log'
 

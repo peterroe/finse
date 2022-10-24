@@ -43,14 +43,14 @@ export const completionExt: pathFn<string> = (path: string) => {
  */
 export async function getFileRealPath(path: string): Promise<string> {
   debug('getFileRealPath', path)
-  if(!extname(path)) {
+  if (!extname(path)) {
     // debug('getRealPath', JSON.parse(parse(path))
     path = await completionExt(path)
   }
   return await getRealPath(path)
 }
 
-export async function getRealPath(path:string): Promise<string> {
+export async function getRealPath(path: string): Promise<string> {
   try {
     return await fs.realpath(path)
   }
