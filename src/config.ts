@@ -19,3 +19,6 @@ export const blackList = [
 ]
 
 export const moduleReg = /(import|export)\s+.*\s+from\s+['"](.*)['"]|require\(['"](.*)['"]\)|import\(['"](.*)['"]\)|import\s+['"](.*)['"]/g
+
+export const requireReg = /require\(['"](.*)['"]\)/g
+

@@ -1,7 +1,8 @@
 import { extname, resolve } from 'path'
-import { blackList, moduleReg } from './config'
+import { blackList } from './config'
 import { completionExt } from './fs'
 import Tree from './tree'
+import match from './match'
 import { debug } from './log'
 
 function getEffectiveExt(fileName: string) {
@@ -24,14 +25,16 @@ export function filterBlackList(files: string[]): string[] {
  * @param {string} targetFileName
  * @param {string} fileContent
  */
-export function isMatchTargetFile(
+export async function isMatchTargetFile(
   file: string,
   targetFileName: string,
   fileContent: string,
-): boolean {
-  const MatchResult = fileContent.match(moduleReg) || []
+): Promise<boolean> {
+  // ['import xx from "xx", ]
+  const matchResult = await match(fileContent)
 
-  const rawImportPaths: Array<string> = MatchResult
+  // ["xx", ]
+  const rawImportPaths: Array<string> = matchResult
     .filter(result => result.length)
     .map((result) => {
       return result.match(/['"](.*)['"]/g)?.[0].slice(1, -1) || ''

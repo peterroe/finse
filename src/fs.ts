@@ -91,11 +91,12 @@ export async function find(
       if (await isDirectory(file)) { await dfs(file) }
       else {
         const fileContent = await fs.readFile(file, 'utf-8')
-        const isInclude = isMatchTargetFile(
+        const isInclude = await isMatchTargetFile(
           resolve(file, '../'),
           targetFileName,
           fileContent,
         )
+
         if (isInclude)
           result.push(file)
           // success(`Find in ${file}`)
