@@ -1,4 +1,4 @@
-import { findStaticImports, findDynamicImports } from 'mlly'
+import { findDynamicImports, findStaticImports } from 'mlly'
 import { requireReg } from './config'
 
 function findRequire(code: string): Array<string> {
@@ -8,7 +8,7 @@ function findRequire(code: string): Array<string> {
 async function findImports(code: string): Promise<Array<string>> {
   const arr = await Promise.all([
     findStaticImports(code),
-    findDynamicImports(code)
+    findDynamicImports(code),
   ])
   return arr.flat().map(it => it.code)
 }
