@@ -2,7 +2,7 @@ import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
 import { filterBlackList, isMatchTargetFile } from './utils'
 import { debug, error } from './log'
-import { extensions } from './config'
+import { extensions, pureExtensions } from './config'
 
 type pathFn<T> = (path: string) => T
 
@@ -31,7 +31,7 @@ export const completionExt: pathFn<string> = (path: string) => {
       return path
     }
   }
-  error(`Can't find ${path} :(`)
+  error(`Can't find ${path}(${pureExtensions}) :(`)
   process.exit(0)
 }
 

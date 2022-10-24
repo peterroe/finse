@@ -15,5 +15,5 @@ export default async function run(args: Array<string>) {
 
   const filePaths: Array<string> = await find(targetFileName, projectFilePath)
 
-  generateTree(projectFilePath, filePaths)
+  generateTree(projectFilePath, filePaths, targetFileName)
 }

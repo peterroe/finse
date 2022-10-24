@@ -2,13 +2,27 @@ import { extname, relative, sep } from 'path'
 import c from 'kleur'
 import { debug } from './log'
 
+type LogFn<T> = (o: T) => string
+
+const logPrefix: LogFn<boolean> = (f: boolean) => {
+  return f ? '└─' : '├─'
+}
+
+const logName: LogFn<TreeNode> = ({ name, isTarget }) => {
+  if (isTarget && extname(name))
+    return `${c.bgYellow(name)} (Your target file)`
+  return extname(name) ? c.bgCyan(name) : name
+}
+
 class TreeNode {
   name: string
   children: Array<TreeNode>
+  isTarget: boolean
 
-  constructor(name: string, children?: Array<TreeNode>) {
+  constructor(name: string, children?: Array<TreeNode>, isTarget?: boolean) {
     this.name = name
     this.children = children || []
+    this.isTarget = isTarget || false
   }
 }
 
@@ -34,7 +48,7 @@ export default class Tree {
       this.insert(relativeDirs)
   }
 
-  insert(relativeDirs: Array<string>) {
+  insert(relativeDirs: Array<string>, isTarget = false) {
     debug('insert==>', JSON.stringify(relativeDirs))
     let i = 0
     let parentNode = this.root
@@ -47,7 +61,7 @@ export default class Tree {
         parentNode = parentNode.children[index]
       }
       else {
-        const node = new TreeNode(dirName)
+        const node = new TreeNode(dirName, [], isTarget)
         const len = parentNode.children.push(node)
         parentNode = parentNode.children[len - 1]
       }
@@ -56,16 +70,15 @@ export default class Tree {
     debug('tree', JSON.stringify(this.root))
   }
 
+  insertTarget(targetFileName: string) {
+    const relativeDirs = relative(this.treeName, targetFileName).split(sep)
+    this.insert(relativeDirs, true)
+  }
+
   output() {
-    const logName = (name: string) => {
-      return extname(name) ? c.bgCyan(name) : name
-    }
-    const logPrefix = (f: boolean) => {
-      return f ? '└─' : '├─'
-    }
     console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {
-      console.log(`${'    '.repeat(d) + logPrefix(flag) + logName(node.name)}\n`)
+      console.log(`${'    '.repeat(d) + logPrefix(flag) + logName(node)}\n`)
       for (let i = 0; i < node.children.length; i++) {
         const no = node.children[i]
         if (no)

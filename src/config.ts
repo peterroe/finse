@@ -4,7 +4,9 @@
 
 // export const __dirname = dirname(__filename)
 
-export const extensions = ['/index.ts', '/index.js', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+export const extensions = ['/index.ts', '/index.js', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '/index.vue']
+
+export const pureExtensions = extensions.filter(ext => ext.startsWith('.'))
 
 export const blackList = [
   'dist',
