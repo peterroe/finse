@@ -1,6 +1,6 @@
-import './test/oo'
+import './thud.tsx'
 
-export * from './test/mode.js'
+export * from './bar/mode.jsx'
 
 export default function () {
   console.log('Hello, world!')

@@ -3,7 +3,7 @@ import { blackList } from './config'
 import { completionExt } from './fs'
 import Tree from './tree'
 import match from './match'
-import { debug } from './log'
+import { debug, warn } from './log'
 
 function getEffectiveExt(fileName: string) {
   const ext = extname(fileName)
@@ -56,8 +56,12 @@ export async function isMatchTargetFile(
 }
 
 export function generateTree(projectFilePath: string, paths: Array<string>, targetFileName: string) {
-  // console.log(paths, projectFilePath)
-  // const tree = longestCommonPrefix(paths)
+  
+  if(!paths.length) {
+    warn("No file was found")
+    return
+  }
+
   const ins = new Tree(projectFilePath)
 
   ins.generateNodeFrom(paths)

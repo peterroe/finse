@@ -1,13 +1,39 @@
 import { describe, expect, it } from 'vitest'
+import { execa } from 'execa'
 
-describe('test', () => {
-  it('should workd', () => {
-    expect([1, 2, 3].map(it => it ** it)).toMatchInlineSnapshot(`
-      [
-        1,
-        4,
-        27,
-      ]
+describe('finse test', async () => {
+  it('should find', async () => {
+    const { stdout } = await execa('finse', ['test/demo/bar/oop.ts'])
+    expect(stdout).toMatchInlineSnapshot(`
+      "
+      successful: 
+
+      └─finse
+
+          └─test
+
+              └─demo
+
+                  ├─bar
+
+                      ├─corge
+
+                          └─nacho.vue
+
+                      └─oop.ts (Your target file)
+
+                  ├─foo
+
+                      └─sharp.js
+
+                  └─thud.tsx
+      "
     `)
+  })
+
+  it('Not find', async () => {
+    const { stdout } = await execa('finse', ['test/demo/bar/mode'])
+    expect(stdout).toMatchInlineSnapshot('"No file was found"')
+    
   })
 })
