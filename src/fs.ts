@@ -41,20 +41,22 @@ export const completionExt: pathFn<string> = (path: string) => {
  * @usage getRealPath('./Desktop/1.txt')
  * @return /Users/xxx/Desktop/1.txt
  */
-export async function getRealPath(path: string): Promise<string> {
-  debug('getRealPath', path)
-  if (extname(path)) {
-    try {
-      return await fs.realpath(path)
-    }
-    catch (e) {
-      error('File not found, please check the path :(')
-      process.exit(0)
-    }
-  }
-  else {
+export async function getFileRealPath(path: string): Promise<string> {
+  debug('getFileRealPath', path)
+  if(!extname(path)) {
     // debug('getRealPath', JSON.parse(parse(path))
-    return await completionExt(path)
+    path = await completionExt(path)
+  }
+  return await getRealPath(path)
+}
+
+export async function getRealPath(path:string): Promise<string> {
+  try {
+    return await fs.realpath(path)
+  }
+  catch (e) {
+    error('File not found, please check the path :(')
+    process.exit(0)
   }
 }
 

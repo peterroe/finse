@@ -40,7 +40,6 @@ export function isMatchTargetFile(
   if (rawImportPaths) {
     for (const item of rawImportPaths) {
       debug('import', JSON.stringify(item))
-      console.log(extname(item))
 
       let fileName = resolve(file, item)
       fileName = getEffectiveExt(fileName)
