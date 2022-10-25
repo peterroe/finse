@@ -8,25 +8,17 @@ describe('finse test', async () => {
       "
       successful: 
 
-      └─finse
+      └─finse/test/demo
 
-          └─test
+          ├─bar
 
-              └─demo
+              ├─corge/nacho.vue
 
-                  ├─bar
+              └─oop.ts (Your target file)
 
-                      ├─corge
+          ├─foo/sharp.js
 
-                          └─nacho.vue
-
-                      └─oop.ts (Your target file)
-
-                  ├─foo
-
-                      └─sharp.js
-
-                  └─thud.tsx
+          └─thud.tsx
       "
     `)
   })
@@ -37,17 +29,11 @@ describe('finse test', async () => {
       "
       successful: 
 
-      └─finse
+      └─finse/test/demo
 
-          └─test
+          ├─thud.tsx
 
-              └─demo
-
-                  ├─thud.tsx
-
-                  └─bar
-
-                      └─mode.jsx (Your target file)
+          └─bar/mode.jsx (Your target file)
       "
     `)
   })
