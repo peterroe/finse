@@ -1,6 +1,6 @@
 import { extname, resolve } from 'path'
 import { blackList } from './config'
-import { completionExt, aliasResolve } from './fs'
+import { aliasResolve, completionExt } from './fs'
 import Tree from './tree'
 import match from './match'
 import { debug, warn } from './log'
@@ -35,7 +35,7 @@ export async function isMatchTargetFile(
   file: string,
   targetFileName: string,
   fileContent: string,
-  projectFilePath: string
+  projectFilePath: string,
 ): Promise<boolean> {
   // ['import xx from "xx", ]
   const matchResult = await match(fileContent)
@@ -47,10 +47,10 @@ export async function isMatchTargetFile(
       return result.match(/['"](.*)['"]/g)?.[0].slice(1, -1) || ''
       // ignore npm package
     }).filter(filterLocalPath)
-  
+
   if (rawImportPaths.length) {
     rawImportPaths = await aliasResolve(rawImportPaths, projectFilePath)
-    
+
     for (const item of rawImportPaths) {
       debug('import ==>            ', JSON.stringify(item))
 
@@ -65,9 +65,8 @@ export async function isMatchTargetFile(
 }
 
 export function generateTree(projectFilePath: string, paths: Array<string>, targetFileName: string) {
-  
-  if(!paths.length) {
-    warn("No file was found")
+  if (!paths.length) {
+    warn('No file was found')
     return
   }
 
@@ -83,7 +82,8 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
 export function safeParse(json: string) {
   try {
     return JSON.parse(json)
-  } catch {
+  }
+  catch {
     warn('tsconfig.json parse error')
   }
   return {}

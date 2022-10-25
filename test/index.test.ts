@@ -34,6 +34,5 @@ describe('finse test', async () => {
   it('Not find', async () => {
     const { stdout } = await execa('finse', ['test/demo/bar/mode'])
     expect(stdout).toMatchInlineSnapshot('"No file was found"')
-    
   })
 })
