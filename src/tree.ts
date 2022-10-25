@@ -5,7 +5,7 @@ import { debug } from './log'
 type LogFn<T> = (o: T) => string
 
 const logPrefix: LogFn<boolean> = (f: boolean) => {
-  return f ? '└─' : '├─'
+  return f ? '└─ ' : '├─ '
 }
 
 const logName: LogFn<TreeNode> = ({ name, isTarget, linkPath }) => {
@@ -105,7 +105,7 @@ export default class Tree {
   output() {
     console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {
-      console.log(`${'    '.repeat(d) + logPrefix(flag) + logName(node)}\n`)
+      console.log(`${'│   '.repeat(d) + logPrefix(flag) + logName(node)}\n`)
       for (let i = 0; i < node.children.length; i++) {
         const no = node.children[i]
         if (no)

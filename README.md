@@ -1,3 +1,5 @@
+<img src="./logo.svg" />
+
 ## Why
 
 * It's hard to find where this file is used
