@@ -6,6 +6,7 @@ interface optionType {
   '--': Array<any>
   expand?: boolean
   root?: string
+  link?: boolean
 }
 
 export default async function run(filepath: string, options: optionType) {

@@ -1,44 +1,69 @@
-<img src="./logo.svg" />
+<p align="center">
+  <img src="./logo.svg" height=300/>  
+</p>
 
-## Why
+## finse
 
-* It's hard to find where this file is used
+Find which files reference the target file
 
-* Search in IDEA is not enough
+### Features
 
-## What
+* Friendly output
+* Supports alias via `tsconfig.json`
+* Supports `esm` and `cjs`
+* Detect the project root directory
+* Unlimited file types
 
-* A cli tool to find where this file is used
-
-## How
-
-```js
-import xx from './test/index.js'
-import xx from './test'
-import xx from '.'
-import '../../foo.ts'
-export * from './test'
-
-// import xx from '~/test'
-// import xx from '@/test'
-// monorepo 'hhjh/kjhh'
-
-const x =  require('./test/index.js')
-const x = require('./test')
-
-```
-
-## Flow
+### Install
 
 ```shell
-$ find-use ./test/index.js
+$ npm i -g finse
+$ finse -h # help
 ```
 
-* find root dir: '.git'
+### Usage
 
+Suppose we have a project，such as：
 
-## extensions
-
-```js
-['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+```txt
+finse
+  └─ test
+      └─ demo
+          ├─ bar
+              ├─ corge
+                  └─ nacho.vue
+              └─ oop.ts
+          ├─ foo
+              └─ sharp.js # sdf
+          └─ thud.tsx
 ```
+
+And you want to find out which files reference `oop.ts`，just run：
+
+```shell
+$ finse text/demo/bar/oop.ts
+```
+
+<p align="center">
+  <img src="./img/usage.png" />
+</p>
+
+### API
+
+**--root [rootname]**
+
+* Specify the project root directory
+
+**--expand**
+
+* Expand collapsed file tree
+
+**--link**
+
+* Display the absolute path of the file
+
+### Motivation
+
+* It's hard to find where files are used
+
+* Search in IDEA is not enough, it's difficult to give exact search keywords

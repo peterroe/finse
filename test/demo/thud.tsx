@@ -1,4 +1,4 @@
-import some from '~/mode'
+import some from './bar/mode'
 
 require('../demo/bar/oop')
 
