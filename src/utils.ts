@@ -1,16 +1,22 @@
 import { extname, resolve } from 'path'
 import { blackList } from './config'
-import { completionExt } from './fs'
+import { completionExt, aliasResolve } from './fs'
 import Tree from './tree'
 import match from './match'
 import { debug, warn } from './log'
 
-function getEffectiveExt(fileName: string) {
+export function getEffectiveExt(fileName: string) {
   const ext = extname(fileName)
   if (!ext || ext === '.config')
     return completionExt(fileName)
   else
     return fileName
+}
+
+function filterLocalPath(importPath: string) {
+  // return false
+  return importPath.startsWith('.')
+    || /^\W+\/.*/.test(importPath)
 }
 
 export function filterBlackList(files: string[]): string[] {
@@ -29,25 +35,28 @@ export async function isMatchTargetFile(
   file: string,
   targetFileName: string,
   fileContent: string,
+  projectFilePath: string
 ): Promise<boolean> {
   // ['import xx from "xx", ]
   const matchResult = await match(fileContent)
 
   // ["xx", ]
-  const rawImportPaths: Array<string> = matchResult
+  let rawImportPaths: Array<string> = matchResult
     .filter(result => result.length)
     .map((result) => {
       return result.match(/['"](.*)['"]/g)?.[0].slice(1, -1) || ''
-    }).filter(importPath => importPath.startsWith('.'))
-
-  if (rawImportPaths) {
+      // ignore npm package
+    }).filter(filterLocalPath)
+  
+  if (rawImportPaths.length) {
+    rawImportPaths = await aliasResolve(rawImportPaths, projectFilePath)
+    
     for (const item of rawImportPaths) {
-      debug('import', JSON.stringify(item))
+      debug('import ==>            ', JSON.stringify(item))
 
       let fileName = resolve(file, item)
       fileName = getEffectiveExt(fileName)
 
-      debug('importFilePath', fileName)
       if (fileName === targetFileName)
         return true
     }
@@ -69,4 +78,13 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
   ins.insertTarget(targetFileName)
 
   ins.output()
+}
+
+export function safeParse(json: string) {
+  try {
+    return JSON.parse(json)
+  } catch {
+    warn('tsconfig.json parse error')
+  }
+  return {}
 }

@@ -1,3 +1,5 @@
+import some from '~/mode'
+
 require('../demo/bar/oop')
 
 if (Math.random() > 0.5)

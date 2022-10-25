@@ -15,10 +15,10 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "vitest",
+      "vitest"
     ],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["test/demo/bar/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

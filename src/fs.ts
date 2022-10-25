@@ -1,6 +1,6 @@
 import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
-import { filterBlackList, isMatchTargetFile } from './utils'
+import { filterBlackList, isMatchTargetFile, safeParse, getEffectiveExt } from './utils'
 import { debug, error } from './log'
 import { extensions, pureExtensions } from './config'
 
@@ -27,7 +27,7 @@ export const completionExt: pathFn<string> = (path: string) => {
   for (const ext of extensions) {
     if (existsSync(path + ext)) {
       path += ext
-      debug('completionExt', path)
+      debug('completionExt         ', path)
       return path
     }
   }
@@ -86,23 +86,93 @@ export async function find(
       await fs.readdir(dirname),
     ).map(file => join(dirname, file))
 
+    debug('detect ==============>', dirname + '/**')
     for (const file of files) {
-      debug('detect =====>', file)
-      if (await isDirectory(file)) { await dfs(file) }
+    debug('detect ============>  ', file)
+    if (await isDirectory(file)) { await dfs(file) }
       else {
         const fileContent = await fs.readFile(file, 'utf-8')
         const isInclude = await isMatchTargetFile(
           resolve(file, '../'),
           targetFileName,
           fileContent,
+          projectFilePath
         )
 
         if (isInclude)
           result.push(file)
-          // success(`Find in ${file}`)
+        
       }
     }
   }
   await dfs(projectFilePath)
   return result
 }
+
+type PathsConfig = {
+  [k: string]: Array<string>
+}
+
+// https://www.tslang.cn/docs/handbook/module-resolution.html
+function pathReplace(
+  rawImportPaths: Array<string>, 
+  paths: PathsConfig, 
+  baseUrl: string,
+  projectFilePath: string
+) {
+  const pathsKey = Object.keys(paths)
+  debug('beforePathResolve     ', JSON.stringify(rawImportPaths))
+
+  for(let i = 0; i < rawImportPaths.length; i++) {
+    for(let key of pathsKey) {
+      if(!key.includes('*')) {
+        continue
+      }
+      const name = 
+        rawImportPaths[i].match(
+          new RegExp(key.replace('*', '(?<name>.*)'))
+        )?.groups?.name || ''
+
+      if(name) {
+        const pathsValue =  paths[key]
+        for(let k = 0; k < pathsValue.length; k++) {
+          const realPath = pathsValue[k].replace('*', name)
+          const fullPath = getEffectiveExt(resolve(projectFilePath, realPath))
+          if(existsSync(fullPath)) {
+            rawImportPaths[i] = resolve(baseUrl, realPath)
+          }
+        }
+      }
+    }
+  }
+  debug('afterPathResolve      ', JSON.stringify(rawImportPaths))
+
+}
+
+export async function aliasResolve(rawImportPaths: Array<string>, projectFilePath: string): Promise<Array<string>> {
+  debug('aliasResolve ====>    ', JSON.stringify(rawImportPaths))
+  const tsconfig = resolve(projectFilePath, 'tsconfig.json')
+  if(!existsSync(tsconfig)) {
+    return rawImportPaths
+  }
+  const content = await fs.readFile(tsconfig, 'utf-8')
+
+  const o = safeParse(content)
+  const { 
+    paths = o.paths,
+    baseUrl = '.' 
+  } : { paths: PathsConfig, baseUrl: string } 
+  = o.compilerOptions || {}
+  // const path = JSON.parse(content)
+  // console.log({paths})
+  // console.log(content)
+  if(!paths) {  
+    return rawImportPaths
+  }
+  
+
+  pathReplace(rawImportPaths, paths, baseUrl, projectFilePath)
+
+  return rawImportPaths
+}
+
