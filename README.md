@@ -119,10 +119,11 @@ But have to make sure there is such a configuration in `tsconfig.json`:
 {
   "paths": {
     "~/*": ["test/demo/bar/*"]
+    "@/*": ["src/*"]
   }
 }
 ```
 
-### Why is it called finse？
+### finse
 
 it's mean find use
