@@ -50,7 +50,7 @@ export default class Tree {
   }
 
   generateNodeFrom(paths: Array<string>) {
-    console.log(paths)
+
     const relativeDirsPaths: Array<Array<string>> = paths.map(path => relative(this.treeName, path).split(sep))
 
     for (let i = 0; i < relativeDirsPaths.length; i++) {
@@ -59,7 +59,7 @@ export default class Tree {
   }
 
   insert(relativeDirs: Array<string>, isTarget = false, linkPath?: string) {
-    console.log(relativeDirs)
+
     debug('insert==>', JSON.stringify(relativeDirs))
     let i = 0
     let parentNode = this.root
