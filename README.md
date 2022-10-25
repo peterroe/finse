@@ -23,7 +23,7 @@ $ finse -h # help
 
 ### Usage
 
-Suppose we have a project，such as：
+Suppose we have a project, its directory structure is like this：
 
 ```txt
 finse
@@ -44,9 +44,13 @@ And you want to find out which files reference `oop.ts`，just run：
 $ finse text/demo/bar/oop.ts
 ```
 
+Maybe you will see the output similar to this:
+
 <p align="center">
   <img src="./img/usage.png" />
 </p>
+
+The yellow background represents the file you want to match, the cyan background is the file that "uses" it
 
 ### API
 
@@ -64,6 +68,49 @@ $ finse text/demo/bar/oop.ts
 
 ### Motivation
 
-* It's hard to find where files are used
+* It's hard to find which other files use the target file
 
 * Search in IDEA is not enough, it's difficult to give exact search keywords
+
+### How is works ?
+
+* First, it will detect the project root directory if no directory is specified
+* By default, the directory where `package.json` is located is selected as the root directory
+* Next, all reasonable files in the directory will be scanned
+* Then match the contents of the file to see if there is an import statement
+* `finse` will recognize the following imports
+
+```js
+// static import
+import xx from 'xxx'
+
+if(Math.random() > 0.5) {
+  // dynamic import
+  import("xx.ts")
+}
+
+// require import
+require("./xx/xx")
+```
+
+`finse` works with regular expressions, But don't worry about "accidental recognition"：
+
+```js
+// Yes, legal import
+import xx from 'xxx'
+
+// No，Imports in comments are not recognized
+// comment: import xx from 'xxx'
+```
+
+And supports identifying paths with alias:
+
+```html
+<script setup>
+import xx from '@/xx'
+// or:
+import xxx from '~/xx'
+</script>
+```
+
+But have to make sure there is such a configuration in `tsconfig.json`
