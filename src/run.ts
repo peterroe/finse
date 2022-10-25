@@ -2,14 +2,19 @@ import { find, getFileRealPath, getProjectRootDir, getRealPath } from './fs'
 import { generateTree } from './utils'
 import { debug } from './log'
 
-interface optionType { [k: string]: any }
+interface optionType { 
+  '--': Array<any>
+  expand?: boolean
+  root?: string
+}
 
-export default async function run(args: Array<string>, options: optionType) {
-  // console.log(options)
+export default async function run(filepath: string, options: optionType) {
+  global.options = options
+  
   const { root } = options
-  debug('Run', args[0])
+  debug('Run', filepath)
 
-  const targetFileName: string = await getFileRealPath(args[0])
+  const targetFileName: string = await getFileRealPath(filepath)
 
   const projectFilePath: string = (root && await getRealPath(root)) || await getProjectRootDir(targetFileName)
 

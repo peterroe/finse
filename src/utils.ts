@@ -76,7 +76,7 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
 
   ins.insertTarget(targetFileName)
 
-  ins.foldDir()
+  !global.options?.expand && ins.foldDir()
 
   ins.output()
 
@@ -89,5 +89,4 @@ export function safeParse(json: string) {
   catch {
     warn('tsconfig.json parse error')
   }
-  return {}
 }

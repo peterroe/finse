@@ -8,21 +8,28 @@ const logPrefix: LogFn<boolean> = (f: boolean) => {
   return f ? '└─' : '├─'
 }
 
-const logName: LogFn<TreeNode> = ({ name, isTarget }) => {
+const logName: LogFn<TreeNode> = ({ name, isTarget, linkPath }) => {
+
+  const targetFileStr = `${c.bgYellow(name)} (Your target file)`
+
+  const matchFileStr = global.options?.link ? `${c.bgCyan(name)} ${c.dim(linkPath)}` : c.bgCyan(name) 
+
   if (isTarget && extname(name))
-    return `${c.bgYellow(name)} (Your target file)`
-  return extname(name) ? c.bgCyan(name) : name
+    return targetFileStr
+  return extname(name) ? matchFileStr : name
 }
 
 class TreeNode {
   name: string
   children: Array<TreeNode>
   isTarget: boolean
+  linkPath: string
 
-  constructor(name: string, children?: Array<TreeNode>, isTarget?: boolean) {
+  constructor(name: string, children?: Array<TreeNode>, isTarget?: boolean, linkPath?: string) {
     this.name = name
     this.children = children || []
     this.isTarget = isTarget || false
+    this.linkPath = linkPath || ''
   }
 }
 
@@ -43,12 +50,16 @@ export default class Tree {
   }
 
   generateNodeFrom(paths: Array<string>) {
+    console.log(paths)
     const relativeDirsPaths: Array<Array<string>> = paths.map(path => relative(this.treeName, path).split(sep))
-    for (const relativeDirs of relativeDirsPaths)
-      this.insert(relativeDirs)
+
+    for (let i = 0; i < relativeDirsPaths.length; i++) {
+      this.insert(relativeDirsPaths[i], false, paths[i])
+    }
   }
 
-  insert(relativeDirs: Array<string>, isTarget = false) {
+  insert(relativeDirs: Array<string>, isTarget = false, linkPath?: string) {
+    console.log(relativeDirs)
     debug('insert==>', JSON.stringify(relativeDirs))
     let i = 0
     let parentNode = this.root
@@ -61,7 +72,7 @@ export default class Tree {
         parentNode = parentNode.children[index]
       }
       else {
-        const node = new TreeNode(dirName, [], isTarget)
+        const node = new TreeNode(dirName, [], isTarget, linkPath)
         const len = parentNode.children.push(node)
         parentNode = parentNode.children[len - 1]
       }

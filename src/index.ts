@@ -3,9 +3,13 @@ import pkg from '../package.json'
 import run from './run'
 const cli = cac()
 
-cli.option('--root <dir>', 'your root dir')
+cli.option('--expand', 'Expand collapsed file tree')
 
-cli.command('[...args]', 'find files').action(run)
+cli.option('--link', 'Display the absolute path of the file')
+
+cli.option('--root <dir>', 'Specify the root directory')
+
+cli.command('[filepath]', 'Path of target file').action(run)
 
 cli.help()
 

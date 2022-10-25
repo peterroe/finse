@@ -63,6 +63,7 @@
     }
   },
   "dependencies": {
+    "@types/strip-comments": "^2.0.1",
     "mlly": "^0.5.16",
     "strip-comments": "^2.0.1"
   }
