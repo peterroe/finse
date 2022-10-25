@@ -64,7 +64,7 @@ The yellow background represents the file you want to match, the cyan background
 
 **--link**
 
-* Display the absolute path of the file
+* Display the absolute path of the file. That way other files can be accessed directly through the terminal
 
 ### Motivation
 
@@ -93,7 +93,7 @@ if(Math.random() > 0.5) {
 require("./xx/xx")
 ```
 
-`finse` works with regular expressions, But don't worry about "accidental recognition"：
+`finse` works with regular expressions, But don't worry about "accidental recognition":
 
 ```js
 // Yes, legal import
@@ -113,4 +113,16 @@ import xxx from '~/xx'
 </script>
 ```
 
-But have to make sure there is such a configuration in `tsconfig.json`
+But have to make sure there is such a configuration in `tsconfig.json`:
+
+```json
+{
+  "paths": {
+    "~/*": ["test/demo/bar/*"]
+  }
+}
+```
+
+### Why is it called finse？
+
+it's mean find use
