@@ -8,17 +8,17 @@ describe('finse test', async () => {
       "
       successful: 
 
-      └─finse/test/demo
+      └─ finse/test/demo
 
-          ├─bar
+      │   ├─ bar
 
-              ├─corge/nacho.vue
+      │   │   ├─ corge/nacho.vue
 
-              └─oop.ts (Your target file)
+      │   │   └─ oop.ts (Your target file)
 
-          ├─foo/sharp.js
+      │   ├─ foo/sharp.js
 
-          └─thud.tsx
+      │   └─ thud.tsx
       "
     `)
   })
@@ -34,17 +34,17 @@ describe('finse test', async () => {
       "
       successful: 
 
-      └─finse
+      └─ finse
 
-          └─test
+      │   └─ test
 
-              └─demo
+      │   │   └─ demo
 
-                  ├─thud.tsx
+      │   │   │   ├─ thud.tsx
 
-                  └─bar
+      │   │   │   └─ bar
 
-                      └─mode.jsx (Your target file)
+      │   │   │   │   └─ mode.jsx (Your target file)
       "
     `)
   })
@@ -55,17 +55,17 @@ describe('finse test', async () => {
       "
       successful: 
 
-      └─finse/test/demo
+      └─ finse/test/demo
 
-          ├─bar
+      │   ├─ bar
 
-              ├─corge/nacho.vue /Users/lsh/Desktop/t/packages/finse/test/demo/bar/corge/nacho.vue
+      │   │   ├─ corge/nacho.vue /Users/lsh/Desktop/t/packages/finse/test/demo/bar/corge/nacho.vue
 
-              └─oop.ts (Your target file)
+      │   │   └─ oop.ts (Your target file)
 
-          ├─foo/sharp.js /Users/lsh/Desktop/t/packages/finse/test/demo/foo/sharp.js
+      │   ├─ foo/sharp.js /Users/lsh/Desktop/t/packages/finse/test/demo/foo/sharp.js
 
-          └─thud.tsx /Users/lsh/Desktop/t/packages/finse/test/demo/thud.tsx
+      │   └─ thud.tsx /Users/lsh/Desktop/t/packages/finse/test/demo/thud.tsx
       "
     `)
   })
