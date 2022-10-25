@@ -1,4 +1,5 @@
 import { findDynamicImports, findStaticImports } from 'mlly'
+import strip from 'strip-comments'
 import { requireReg } from './config'
 
 function findRequire(code: string): Array<string> {
@@ -14,5 +15,6 @@ async function findImports(code: string): Promise<Array<string>> {
 }
 
 export default async function match(code: string): Promise<Array<string>> {
-  return (await findImports(code)).concat(findRequire(code))
+  const pureCode = strip(code)
+  return (await findImports(pureCode)).concat(findRequire(pureCode))
 }
