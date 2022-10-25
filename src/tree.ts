@@ -75,6 +75,22 @@ export default class Tree {
     this.insert(relativeDirs, true)
   }
 
+  foldDir() {
+    const dfs = (node: TreeNode) => {
+      while(node.children.length === 1) {
+        let next = node.children[0]
+        node.name = node.name + '/' + next.name
+        node.children = next.children
+      }
+      for (let i = 0; i < node.children.length; i++) {
+        const no = node.children[i]
+        if (no)
+          dfs(no)
+      }
+    }
+    dfs(this.root)
+  }
+
   output() {
     console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {

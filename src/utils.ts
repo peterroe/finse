@@ -76,7 +76,10 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
 
   ins.insertTarget(targetFileName)
 
+  ins.foldDir()
+
   ins.output()
+
 }
 
 export function safeParse(json: string) {
