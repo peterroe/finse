@@ -117,9 +117,11 @@ But have to make sure there is such a configuration in `tsconfig.json`:
 
 ```json
 {
-  "paths": {
-    "~/*": ["test/demo/bar/*"]
-    "@/*": ["src/*"]
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["test/demo/bar/*"]
+      "@/*": ["src/*"]
+    }
   }
 }
 ```
