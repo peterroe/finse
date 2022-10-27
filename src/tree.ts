@@ -4,15 +4,19 @@ import { debug } from './log'
 
 type LogFn<T> = (o: T) => string
 
+const logSpace: LogFn<number> = (d: number) => {
+  const char = global.options?.clear ? ' ' : '│'
+  return (`${char}   `).repeat(d)
+}
+
 const logPrefix: LogFn<boolean> = (f: boolean) => {
   return f ? '└─ ' : '├─ '
 }
 
 const logName: LogFn<TreeNode> = ({ name, isTarget, linkPath }) => {
-
   const targetFileStr = `${c.bgYellow(name)} (Your target file)`
 
-  const matchFileStr = global.options?.link ? `${c.bgCyan(name)} ${c.dim(linkPath)}` : c.bgCyan(name) 
+  const matchFileStr = global.options?.link ? `${c.bgCyan(name)} ${c.dim(linkPath)}` : c.bgCyan(name)
 
   if (isTarget && extname(name))
     return targetFileStr
@@ -50,16 +54,13 @@ export default class Tree {
   }
 
   generateNodeFrom(paths: Array<string>) {
-
     const relativeDirsPaths: Array<Array<string>> = paths.map(path => relative(this.treeName, path).split(sep))
 
-    for (let i = 0; i < relativeDirsPaths.length; i++) {
+    for (let i = 0; i < relativeDirsPaths.length; i++)
       this.insert(relativeDirsPaths[i], false, paths[i])
-    }
   }
 
   insert(relativeDirs: Array<string>, isTarget = false, linkPath?: string) {
-
     debug('insert==>', JSON.stringify(relativeDirs))
     let i = 0
     let parentNode = this.root
@@ -88,9 +89,9 @@ export default class Tree {
 
   foldDir() {
     const dfs = (node: TreeNode) => {
-      while(node.children.length === 1) {
-        let next = node.children[0]
-        node.name = node.name + '/' + next.name
+      while (node.children.length === 1) {
+        const next = node.children[0]
+        node.name = `${node.name}/${next.name}`
         node.children = next.children
       }
       for (let i = 0; i < node.children.length; i++) {
@@ -105,7 +106,7 @@ export default class Tree {
   output() {
     console.log(c.cyan('\nsuccessful: \n'))
     const dfs = (node: TreeNode, d: number, flag: boolean) => {
-      console.log(`${'│   '.repeat(d) + logPrefix(flag) + logName(node)}\n`)
+      console.log(`${logSpace(d) + logPrefix(flag) + logName(node)}\n`)
       for (let i = 0; i < node.children.length; i++) {
         const no = node.children[i]
         if (no)

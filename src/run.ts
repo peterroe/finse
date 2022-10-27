@@ -2,16 +2,17 @@ import { find, getFileRealPath, getProjectRootDir, getRealPath } from './fs'
 import { generateTree } from './utils'
 import { debug } from './log'
 
-interface optionType { 
+interface optionType {
   '--': Array<any>
   expand?: boolean
   root?: string
   link?: boolean
+  clear?: boolean
 }
 
 export default async function run(filepath: string, options: optionType) {
   global.options = options
-  
+
   const { root } = options
   debug('Run', filepath)
 

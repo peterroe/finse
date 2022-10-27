@@ -138,7 +138,7 @@ function pathReplace(
           const realPath = pathsValue[k].replace('*', name)
 
           const fullPath = getEffectiveExt(resolve(projectFilePath, baseUrl, realPath))
-          
+
           if (existsSync(fullPath))
             rawImportPaths[i] = fullPath
         }

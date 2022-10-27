@@ -79,7 +79,6 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
   !global.options?.expand && ins.foldDir()
 
   ins.output()
-
 }
 
 export function safeParse(json: string) {

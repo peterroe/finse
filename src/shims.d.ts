@@ -3,6 +3,7 @@ declare global {
     expand?: boolean
     root?: string
     link?: boolean
+    clear?: boolean
   } | undefined
 }
 
