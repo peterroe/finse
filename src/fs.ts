@@ -31,7 +31,7 @@ export const completionExt: pathFn<string> = (path: string) => {
       return path
     }
   }
-  error(`Can't find ${path}(${pureExtensions}) :(`)
+  error(`Can't find ${path}, please check the file path :(`)
   process.exit(0)
 }
 
