@@ -25,7 +25,7 @@ describe('finse test', async () => {
 
   it('Not find', async () => {
     const { stdout } = await execa('finse', ['test/demo/bar/no'])
-    expect(stdout).toMatchInlineSnapshot('"Can\'t find test/demo/bar/no(.mjs,.js,.ts,.jsx,.tsx,.json,.vue) :("')
+    expect(stdout).toMatchInlineSnapshot('"Can\'t find test/demo/bar/no, please check the file path :("')
   })
 
   it('Not Expand', async () => {
@@ -39,6 +39,8 @@ describe('finse test', async () => {
       │   └─ test
 
       │   │   └─ demo
+
+      │   │   │   ├─ baz.js
 
       │   │   │   ├─ thud.tsx
 
