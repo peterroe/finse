@@ -11,6 +11,7 @@ export const pureExtensions = extensions.filter(ext => ext.startsWith('.'))
 export const blackList = [
   'dist',
   'node_modules',
+  'coverage',
   'yarn.lock',
   'package-lock.json',
   'pnpm-lock.yaml',
