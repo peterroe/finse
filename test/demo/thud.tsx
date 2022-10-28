@@ -1,4 +1,4 @@
-import some from './bar/mode'
+import some from '~/bar/mode.jsx'
 
 require('../demo/bar/oop')
 

@@ -50,25 +50,4 @@ describe('finse test', async () => {
       "
     `)
   })
-
-  it('Show link', async () => {
-    const { stdout } = await execa('finse', ['test/demo/bar/oop', '--link'])
-    expect(stdout).toMatchInlineSnapshot(`
-      "
-      successful: 
-
-      └─ finse/test/demo
-
-      │   ├─ bar
-
-      │   │   ├─ corge/nacho.vue /Users/lsh/Desktop/t/packages/finse/test/demo/bar/corge/nacho.vue
-
-      │   │   └─ oop.ts (Your target file)
-
-      │   ├─ foo/sharp.js /Users/lsh/Desktop/t/packages/finse/test/demo/foo/sharp.js
-
-      │   └─ thud.tsx /Users/lsh/Desktop/t/packages/finse/test/demo/thud.tsx
-      "
-    `)
-  })
 })

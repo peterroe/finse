@@ -36,6 +36,7 @@
     "fix": "eslint --fix \"**/*.{ts,js}\"",
     "start": "esno src/index.ts",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "release": "bumpp",
     "typecheck": "tsc --noEmit"
   },

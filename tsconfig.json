@@ -18,7 +18,7 @@
       "vitest"
     ],
     "paths": {
-      "~/*": ["test/demo/bar/*"]
+      "~/*": ["./test/demo/*"]
     }
   },
   "exclude": ["dist", "node_modules"]
