@@ -2,7 +2,7 @@ import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
 import { filterBlackList, getEffectiveExt, isMatchTargetFile, safeParse } from './utils'
 import { debug, error } from './log'
-import { extensions, pureExtensions } from './config'
+import { extensions } from './config'
 
 type pathFn<T> = (path: string) => T
 
@@ -11,7 +11,7 @@ const isRootDir: pathFn<boolean> = (path: string) => {
 }
 
 const isProjectRootDir: pathFn<boolean> = (path: string) => {
-  return existsSync(resolve(path, 'package.json'))
+  return existsSync(resolve(path, 'package.json') || resolve(path, '.git'))
 }
 
 const isDirectory: pathFn<Promise<boolean>> = async (path: string) => {
@@ -109,7 +109,7 @@ export async function find(
 }
 
 interface PathsConfig {
-  [k: string]: Array<string>
+  [k: string]: Array<string> | string
 }
 
 // https://www.tslang.cn/docs/handbook/module-resolution.html
@@ -138,7 +138,6 @@ function pathReplace(
           const realPath = pathsValue[k].replace('*', name)
 
           const fullPath = getEffectiveExt(resolve(projectFilePath, baseUrl, realPath))
-
           if (existsSync(fullPath))
             rawImportPaths[i] = fullPath
         }
@@ -162,11 +161,14 @@ export async function aliasResolve(rawImportPaths: Array<string>, projectFilePat
     baseUrl = '.',
   }: { paths: PathsConfig; baseUrl: string }
   = o.compilerOptions || {}
-  // const path = JSON.parse(content)
-  // console.log({paths})
-  // console.log(content)
+
   if (!paths)
     return rawImportPaths
+
+  for (const key in paths) {
+    if (typeof paths[key] === 'string')
+      paths[key] = [paths[key] as string]
+  }
 
   pathReplace(rawImportPaths, paths, baseUrl, projectFilePath)
 
