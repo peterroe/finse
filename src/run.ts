@@ -8,6 +8,7 @@ interface optionType {
   root?: string
   link?: boolean
   clear?: boolean
+  ignore?: boolean
 }
 
 export default async function run(filepath: string, options: optionType) {

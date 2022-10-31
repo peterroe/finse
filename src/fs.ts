@@ -1,7 +1,7 @@
 import { existsSync, promises as fs } from 'fs'
 import { extname, join, resolve } from 'path'
 import { filterBlackList, getEffectiveExt, isMatchTargetFile, safeParse } from './utils'
-import { debug, error } from './log'
+import { debug, error, warn } from './log'
 import { extensions } from './config'
 
 type pathFn<T> = (path: string) => T
@@ -31,7 +31,10 @@ export const completionExt: pathFn<string> = (path: string) => {
       return path
     }
   }
+  if (global.options?.ignore)
+    return ''
   error(`Can't find ${path}, please check the file path :(`)
+  warn('\nPlease try to fix the file path or use the options "--ignore"')
   process.exit(0)
 }
 

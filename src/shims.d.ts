@@ -4,6 +4,7 @@ declare global {
     root?: string
     link?: boolean
     clear?: boolean
+    ignore?: boolean
   } | undefined
 }
 
