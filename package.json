@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "@types/strip-comments": "^2.0.1",
+    "minimatch": "^5.1.0",
     "mlly": "^0.5.16",
     "strip-comments": "^2.0.1"
   }

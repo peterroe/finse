@@ -1,4 +1,5 @@
 import { extname, resolve } from 'path'
+import minimatch from 'minimatch'
 import { blackList } from './config'
 import { aliasResolve, completionExt } from './fs'
 import Tree from './tree'
@@ -21,7 +22,7 @@ function filterLocalPath(importPath: string) {
 
 export function filterBlackList(files: string[]): string[] {
   return files.filter((file) => {
-    return !blackList.includes(file) && !file.startsWith('.')
+    return blackList.every(it => !minimatch(file, it))
   })
 }
 
