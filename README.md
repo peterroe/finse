@@ -66,6 +66,10 @@ The yellow background represents the file you want to match, the cyan background
 
 * Display the absolute path of the file. That way other files can be accessed directly through the terminal
 
+**--ignore**
+
+* Ignore file does not exist errors
+
 ### Motivation
 
 * It's hard to find which other files use the target file
@@ -84,13 +88,13 @@ The yellow background represents the file you want to match, the cyan background
 // static import
 import xx from 'xxx'
 
-if(Math.random() > 0.5) {
+if (Math.random() > 0.5) {
   // dynamic import
-  import("xx.ts")
+  import('xx.ts')
 }
 
 // require import
-require("./xx/xx")
+require('./xx/xx')
 ```
 
 `finse` works with regular expressions, But don't worry about "accidental recognition":
