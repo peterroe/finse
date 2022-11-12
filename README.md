@@ -123,7 +123,7 @@ But have to make sure there is such a configuration in `tsconfig.json`:
 {
   "compilerOptions": {
     "paths": {
-      "~/*": ["test/demo/bar/*"]
+      "~/*": ["test/demo/bar/*"],
       "@/*": ["src/*"]
     }
   }
