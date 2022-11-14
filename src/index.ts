@@ -1,7 +1,7 @@
 import { cac } from 'cac'
 import pkg from '../package.json'
 import run from './run'
-const cli = cac()
+const cli = cac(pkg.name)
 
 cli.option('--expand', 'Expand collapsed file tree')
 
