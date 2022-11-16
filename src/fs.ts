@@ -157,7 +157,7 @@ export async function aliasResolve(rawImportPaths: Array<string>, projectFilePat
   if (!existsSync(tsconfig) && !existsSync(jsconfig))
     return rawImportPaths
 
-  const config = !existsSync(tsconfig) ? tsconfig : jsconfig
+  const config = existsSync(tsconfig) ? tsconfig : jsconfig
   const content = await fs.readFile(config, 'utf-8')
 
   const o = safeParse(content)
