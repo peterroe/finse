@@ -134,4 +134,4 @@ it's mean find use
 
 ### Acknowledgement
 
-Thanks for the proposal for `jsconfig.json` by 
+Thanks for the proposal for `jsconfig.json` by [Artsmp](https://github.com/Artsmp)
