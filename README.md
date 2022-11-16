@@ -41,7 +41,7 @@ finse
 And you want to find out which files reference `oop.ts`，just run：
 
 ```shell
-$ finse text/demo/bar/oop.ts
+$ finse test/demo/bar/oop.ts
 ```
 
 Maybe you will see the output similar to this:
@@ -117,7 +117,7 @@ import xxx from '~/xx'
 </script>
 ```
 
-But have to make sure there is such a configuration in `tsconfig.json`:
+But have to make sure there is such a configuration in `[t|j]sconfig.json`:
 
 ```json
 {
@@ -133,3 +133,7 @@ But have to make sure there is such a configuration in `tsconfig.json`:
 ### finse
 
 it's mean find use
+
+### Acknowledgement
+
+Thanks for the proposal for `jsconfig.json` by 

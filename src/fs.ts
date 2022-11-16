@@ -153,10 +153,12 @@ function pathReplace(
 export async function aliasResolve(rawImportPaths: Array<string>, projectFilePath: string): Promise<Array<string>> {
   debug('aliasResolve ====>    ', JSON.stringify(rawImportPaths))
   const tsconfig = resolve(projectFilePath, 'tsconfig.json')
-  if (!existsSync(tsconfig))
+  const jsconfig = resolve(projectFilePath, 'jsconfig.json')
+  if (!existsSync(tsconfig) && !existsSync(jsconfig))
     return rawImportPaths
 
-  const content = await fs.readFile(tsconfig, 'utf-8')
+  const config = !existsSync(tsconfig) ? tsconfig : jsconfig
+  const content = await fs.readFile(config, 'utf-8')
 
   const o = safeParse(content)
   const {
