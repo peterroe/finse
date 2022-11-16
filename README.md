@@ -46,7 +46,7 @@ $ finse test/demo/bar/oop.ts
 
 Maybe you will see the output similar to this:
 
-<img src="./img/demo.png" width="500"/>
+<img src="./img/img.png" width="500"/>
 
 The yellow background represents the file you want to match, the cyan background is the file that "uses" it
 
