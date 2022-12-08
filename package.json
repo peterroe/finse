@@ -1,6 +1,6 @@
 {
   "name": "finse",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "packageManager": "pnpm@7.11.0",
   "description": "A command line tool template",
   "author": "peterroe",
