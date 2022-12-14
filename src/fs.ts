@@ -34,7 +34,8 @@ export const completionExt: pathFn<string> = (path: string) => {
   if (global.options?.ignore)
     return ''
   error(`Can't find ${path}, please check the file path :(`)
-  warn('\nPlease try to fix the file path or use the options "--ignore"')
+  warn('\n1. Make sure you have configured alias in (t|j)sconfig.json')
+  warn('2. Or use the options "--ignore"')
   process.exit(0)
 }
 

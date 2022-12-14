@@ -5,6 +5,7 @@ import { aliasResolve, completionExt } from './fs'
 import Tree from './tree'
 import match from './match'
 import { debug, warn } from './log'
+import JSONC from 'jsonc-simple-parser';
 
 export function getEffectiveExt(fileName: string) {
   const ext = extname(fileName)
@@ -67,7 +68,7 @@ export async function isMatchTargetFile(
 
 export function generateTree(projectFilePath: string, paths: Array<string>, targetFileName: string) {
   if (!paths.length) {
-    warn('No file was found')
+    warn('No files were found')
     return
   }
 
@@ -84,7 +85,7 @@ export function generateTree(projectFilePath: string, paths: Array<string>, targ
 
 export function safeParse(json: string) {
   try {
-    return JSON.parse(json)
+    return JSONC.parse(json)
   }
   catch {
     warn('tsconfig.json parse error')
